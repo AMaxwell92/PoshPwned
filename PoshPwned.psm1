@@ -40,7 +40,7 @@
         } catch {
 
 
-            write-error 'No HaveIBeenPwned API token was found! Run "Set-HaveIBeenPwned -Token [ YourToken ]" and try again!'
+            write-error 'No HaveIBeenPwned API token was found! Run "Set-HIBP -Token [ YourToken ]" and try again!'
             return $false
 
         }
@@ -48,11 +48,7 @@
 
     function Get-Token {
 
-        if ( !( Test-TokenExists ) ) {
-
-            write-error 'No HaveIBeenPwned API token was found! Run "Set-HIBP -Token [ YourToken ]" and try again!'
-
-        }
+        if ( !( Test-TokenExists ) ) { return }
 
         return ( get-itempropertyvalue -name $tokenVarName -path $envVarPath )
 
@@ -60,11 +56,7 @@
 
     function Get-Headers {
 
-        if ( !( Test-TokenExists ) ) {
-
-            write-error 'No HaveIBeenPwned API token was found! Run "Set-HIBP -Token [ YourToken ]" and try again!'
-
-        }
+        if ( !( Test-TokenExists ) ) { return }
 
         return @{
 
@@ -179,8 +171,11 @@
 
         # format the request
         $req = @{
+
             uri     = "$uri$params"
+
             headers = ( get-headers )
+
         }
 
         # send it
